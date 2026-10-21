@@ -72,6 +72,21 @@ there is no silent interpolation, amplitude normalization or negative clipping.
 | Leave one concentration out | 2.928 | 3.225 | 20.903 |
 | Leave concentration and background fold out | 2.950 | 3.172 | 20.903 |
 
+These pooled values mix two regions. Holding out the lowest (0 uM) or highest
+(50 uM) calibration level is extrapolation; holding out any other level is
+interpolation inside the calibrated range:
+
+| Validation scheme | Region | PLS RMSE (uM) | Single derivative wavelength RMSE (uM) |
+| --- | --- | ---: | ---: |
+| Leave one concentration out | Interpolation (6 levels) | 1.922 | 2.295 |
+| Leave one concentration out | Extrapolation (0, 50 uM) | 4.467 | 4.732 |
+| Leave concentration and background fold out | Interpolation (6 levels) | 1.891 | 2.189 |
+| Leave concentration and background fold out | Extrapolation (0, 50 uM) | 4.545 | 4.728 |
+
+The pooled figure is dominated by the 50-uM endpoint. Per held-out level, PLS
+has the lower RMSE at 5 of 8 levels; the single-wavelength baseline is lower at
+0, 1 and 10 uM. `validation_by_fold.csv` and `metrics.json` carry the region.
+
 The single-wavelength baseline chooses its wavelength using training data only.
 It operates on the same differentiated window; it is not an optimized or
 independently calibrated Beer-Lambert assay. The PLS advantage over this baseline
@@ -101,9 +116,13 @@ by clipping or a post-hoc zero correction.
 
 Both holdout schemes test augmented descendants, not new external preparations.
 Endpoint folds are extrapolation; internal folds probe omitted levels inside
-the calibration range. Components and preprocessing are fixed, so the reported
-holdouts do not select them. The reported metrics are not an untouched external
-validation, a validated assay LOQ, or proof of interlaboratory generalization.
+the calibration range. Components and preprocessing are fixed in this repository,
+but they were chosen in prior work on these same data: the 270-380-nm window was
+adopted because it brought these 11 matrix blanks close to zero, and the two
+components were justified by this leave-one-level-out error and the same blanks.
+Both are therefore development diagnostics, not independent checks of those
+choices. The reported metrics are not an untouched external validation, a
+validated assay LOQ, or proof of interlaboratory generalization.
 
 Nonblank supernatants have an input nominal concentration, **not an independently
 known residual concentration**. They are predicted, but not scored against the

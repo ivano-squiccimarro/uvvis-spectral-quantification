@@ -1,5 +1,6 @@
 """Unit and integration checks; generated fixtures are not experimental data."""
 
+import hashlib
 import json
 import tempfile
 import unittest
@@ -9,7 +10,7 @@ import numpy as np
 import pandas as pd
 
 from spectral_quant import SpectralConfig, SpectralPLS
-from spectral_quant.cli import validate_inputs
+from spectral_quant.cli import CASE_FILES, load_case, validate_inputs
 from spectral_quant.model import augmented_design
 from spectral_quant.preprocessing import canonical_frame, correct_and_crop
 from spectral_quant.validation import evaluate, metrics
@@ -30,6 +31,69 @@ def fixture() -> tuple[pd.DataFrame, pd.DataFrame]:
         frame[name] = (i + 1) * (300.0 / wavelength)**2
         rows.append({"sample_id": name, "role": "background", "reference_uM": np.nan})
     return frame, pd.DataFrame(rows)
+
+
+def write_case(folder: Path, observation_text: str | None = None,
+               observation_meta: pd.DataFrame | None = None) -> Path:
+    """Write the fixture as a hashed case directory; optional overrides are tampered inputs."""
+    frame, metadata = fixture()
+    frame.to_csv(folder / "training_spectra.csv", index=False)
+    metadata.to_csv(folder / "training_metadata.csv", index=False)
+    observations = frame[["wavelength_nm", "cal_1", "cal_2"]].rename(
+        columns={"cal_1": "obs_1", "cal_2": "obs_2"})
+    (folder / "observation_spectra.csv").write_text(
+        observation_text or observations.to_csv(index=False), encoding="utf-8")
+    if observation_meta is None:
+        observation_meta = pd.DataFrame({"sample_id": ["obs_1", "obs_2"], "role": ["blank", "supernatant"]})
+    observation_meta.to_csv(folder / "observation_metadata.csv", index=False)
+    files = [{"path": name, "sha256": hashlib.sha256((folder / name).read_bytes()).hexdigest()}
+             for name in CASE_FILES]
+    manifest = {"case": "fixture", "concentration_unit": "uM", "absorbance_unit": "AU",
+                "wavelength_unit": "nm", "files": files}
+    (folder / "manifest.json").write_text(json.dumps(manifest), encoding="utf-8")
+    return folder
+
+
+class CaseLoadingTests(unittest.TestCase):
+    def test_valid_case_loads(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            observation_meta = load_case(write_case(Path(tmp)))[4]
+            self.assertEqual(list(observation_meta.sample_id), ["obs_1", "obs_2"])
+
+    def test_missing_observation_metadata_fails(self) -> None:
+        meta = pd.DataFrame({"sample_id": ["obs_1"], "role": ["blank"]})
+        with tempfile.TemporaryDirectory() as tmp, self.assertRaises(ValueError):
+            load_case(write_case(Path(tmp), observation_meta=meta))
+
+    def test_extra_observation_metadata_fails(self) -> None:
+        meta = pd.DataFrame({"sample_id": ["obs_1", "obs_2", "obs_3"], "role": ["blank"] * 3})
+        with tempfile.TemporaryDirectory() as tmp, self.assertRaises(ValueError):
+            load_case(write_case(Path(tmp), observation_meta=meta))
+
+    def test_duplicate_spectrum_header_fails(self) -> None:
+        frame = fixture()[0]
+        text = "wavelength_nm,obs_1,obs_2,obs_1\n" + "".join(
+            f"{w},{a},{b},{a}\n" for w, a, b in zip(frame.wavelength_nm, frame.cal_1, frame.cal_2))
+        with tempfile.TemporaryDirectory() as tmp, self.assertRaises(ValueError):
+            load_case(write_case(Path(tmp), observation_text=text))
+
+    def test_manifest_without_entry_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            case = write_case(Path(tmp))
+            manifest = json.loads((case / "manifest.json").read_text(encoding="utf-8"))
+            manifest["files"] = manifest["files"][1:]
+            (case / "manifest.json").write_text(json.dumps(manifest), encoding="utf-8")
+            with self.assertRaises(ValueError):
+                validate_inputs(case)
+
+    def test_manifest_unit_mismatch_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            case = write_case(Path(tmp))
+            manifest = json.loads((case / "manifest.json").read_text(encoding="utf-8"))
+            manifest["concentration_unit"] = "nM"
+            (case / "manifest.json").write_text(json.dumps(manifest), encoding="utf-8")
+            with self.assertRaises(ValueError):
+                validate_inputs(case)
 
 
 class PreprocessingTests(unittest.TestCase):
@@ -149,6 +213,14 @@ class ModelTests(unittest.TestCase):
         self.assertEqual(set(scores.model), {"pls", "single_derivative_wavelength", "training_mean"})
         self.assertTrue(np.isfinite(scores.rmse_uM).all())
         self.assertEqual(len(pred[pred.model == "pls"]), 2 * 4 * 3 * 5)
+
+    def test_endpoint_folds_are_extrapolation(self) -> None:
+        frame, metadata = fixture()
+        scores, pred = evaluate(frame, metadata, SpectralConfig())
+        region = scores.groupby("held_out_uM").region.unique().map(tuple).to_dict()
+        self.assertEqual(region, {0.0: ("extrapolation",), 1.0: ("interpolation",),
+                                  3.0: ("interpolation",), 6.0: ("extrapolation",)})
+        self.assertFalse(pred.region.isna().any())
 
     def test_metrics_bias_and_count(self) -> None:
         result = metrics(np.array([0.0, 1.0]), np.array([-1.0, 0.0]))

@@ -45,9 +45,9 @@
       "scheme": "leave_concentration_out",
       "model": "pls",
       "n_augmented": 5850,
-      "rmse_uM": 2.9276145699079033,
-      "mae_uM": 2.056559521995644,
-      "bias_uM": -0.2373865290457483
+      "rmse_uM": 2.9276145699079015,
+      "mae_uM": 2.0565595219956423,
+      "bias_uM": -0.23738652904574528
     },
     {
       "scheme": "leave_concentration_out",
@@ -66,10 +66,120 @@
       "bias_uM": -1.0083333333333346
     }
   ],
+  "validation_by_region": [
+    {
+      "scheme": "joint_concentration_background_out",
+      "model": "pls",
+      "region": "extrapolation",
+      "n_augmented": 1755,
+      "rmse_uM": 4.545090525011233,
+      "mae_uM": 3.531236996440703,
+      "bias_uM": -2.7912308689553593
+    },
+    {
+      "scheme": "joint_concentration_background_out",
+      "model": "pls",
+      "region": "interpolation",
+      "n_augmented": 4095,
+      "rmse_uM": 1.8911098034798979,
+      "mae_uM": 1.4786849792692673,
+      "bias_uM": 0.6856067826302877
+    },
+    {
+      "scheme": "joint_concentration_background_out",
+      "model": "single_derivative_wavelength",
+      "region": "extrapolation",
+      "n_augmented": 1755,
+      "rmse_uM": 4.728003879421294,
+      "mae_uM": 3.3752450159387277,
+      "bias_uM": -2.780569394339874
+    },
+    {
+      "scheme": "joint_concentration_background_out",
+      "model": "single_derivative_wavelength",
+      "region": "interpolation",
+      "n_augmented": 4095,
+      "rmse_uM": 2.1891570893054912,
+      "mae_uM": 1.705690717003002,
+      "bias_uM": 0.8701282192671688
+    },
+    {
+      "scheme": "joint_concentration_background_out",
+      "model": "training_mean",
+      "region": "extrapolation",
+      "n_augmented": 1755,
+      "rmse_uM": 31.96733127390712,
+      "mae_uM": 31.550925925925927,
+      "bias_uM": -15.36574074074074
+    },
+    {
+      "scheme": "joint_concentration_background_out",
+      "model": "training_mean",
+      "region": "interpolation",
+      "n_augmented": 4095,
+      "rmse_uM": 13.647388992063847,
+      "mae_uM": 11.966269841269842,
+      "bias_uM": 5.14484126984127
+    },
+    {
+      "scheme": "leave_concentration_out",
+      "model": "pls",
+      "region": "extrapolation",
+      "n_augmented": 1755,
+      "rmse_uM": 4.466648220350626,
+      "mae_uM": 3.4450384013687274,
+      "bias_uM": -2.7073258515750944
+    },
+    {
+      "scheme": "leave_concentration_out",
+      "model": "pls",
+      "region": "interpolation",
+      "n_augmented": 4095,
+      "rmse_uM": 1.9219198632872307,
+      "mae_uM": 1.4614971451214622,
+      "bias_uM": 0.8211588948954044
+    },
+    {
+      "scheme": "leave_concentration_out",
+      "model": "single_derivative_wavelength",
+      "region": "extrapolation",
+      "n_augmented": 1755,
+      "rmse_uM": 4.731629831356428,
+      "mae_uM": 3.391494890135482,
+      "bias_uM": -2.8524100843346964
+    },
+    {
+      "scheme": "leave_concentration_out",
+      "model": "single_derivative_wavelength",
+      "region": "interpolation",
+      "n_augmented": 4095,
+      "rmse_uM": 2.2946676276791953,
+      "mae_uM": 1.7792442209231916,
+      "bias_uM": 0.8710685719167717
+    },
+    {
+      "scheme": "leave_concentration_out",
+      "model": "training_mean",
+      "region": "extrapolation",
+      "n_augmented": 1755,
+      "rmse_uM": 31.96733127390712,
+      "mae_uM": 31.550925925925927,
+      "bias_uM": -15.36574074074074
+    },
+    {
+      "scheme": "leave_concentration_out",
+      "model": "training_mean",
+      "region": "interpolation",
+      "n_augmented": 4095,
+      "rmse_uM": 13.647388992063847,
+      "mae_uM": 11.966269841269842,
+      "bias_uM": 5.14484126984127
+    }
+  ],
   "blank": {
     "n_measured_spectra": 11,
-    "mean_uM": -1.7016284478976944,
-    "sd_uM": 1.0860053400396332
+    "mean_uM": -1.7016284478976942,
+    "sd_uM": 1.086005340039635
   },
   "counts": {
     "calibration_spectra": 30,

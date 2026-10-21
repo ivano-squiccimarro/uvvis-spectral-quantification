@@ -41,7 +41,9 @@ into three stable folds, excluding both parent types. The same held-out parent
 appears under several physically specified scattering amplitudes; these are
 correlated descendants, not independent experimental replicates.
 
-Metrics pool squared errors across the augmented prediction rows. The plotted
+Metrics pool squared errors across the augmented prediction rows, overall and
+separately for extrapolation (lowest or highest level held out) and
+interpolation (any other level held out). The plotted
 bars show the dispersion of descendant predictions, not confidence intervals.
 No fold-based statistical superiority claim is made. The two baselines are the
 training mean and an OLS regression on one derivative wavelength selected by
