@@ -5,8 +5,12 @@ its absorption band from an interfering matrix. This project provides a
 standalone partial least-squares (PLS) workflow and a measured talazoparib
 case study in a polyvinyl-alcohol/double-emulsion matrix.
 
-**Private development repository.** Code, data and results are under review.
-No public release or third-party redistribution is authorized by this version.
+**Preliminary research software — work in progress.** This public version
+provides a reproducible single-case workflow, not a finished or independently
+validated analytical assay. APIs, documentation and results may evolve. It is
+intended for research and reproducibility, not clinical or diagnostic use.
+Software checks establish implementation consistency; they do not establish
+accuracy on new matrices or samples.
 
 ## What is included
 
@@ -155,7 +159,7 @@ src/spectral_quant/   preprocessing, calibration, validation and CLI
 data/                measured spectra, metadata and SHA256 manifest
 tests/               deterministic fixtures and measured-case integration test
 reports/             reviewed metrics, figures and producer-parity snapshot
-docs/                data schema, methods and private-release checklist
+docs/                data schema, methods and release checklist
 .github/workflows/   automated tests and case reproduction
 ```
 
@@ -171,6 +175,13 @@ This first version covers one real single-analyte case. The thesis also contains
 other matrices and dual-analyte models; they are not claimed to be reproduced by
 this release. This repository does not modify or replace thesis results.
 
-Keep this repository private until the release checklist and author/collaborator
-review are complete. The license for any future public code/data release must be
-agreed separately. No public exposure or profile pinning is part of this setup.
+Code and accompanying documentation are available under the [MIT license](LICENSE).
+Bundled measured spectra and metadata are available under [CC BY 4.0](data/LICENSE.md).
+Please retain attribution, cite the repository and identify the commit used.
+Third-party dependencies retain their own licenses. Public release and these
+terms were authorized by the repository owner on 21 October 2026.
+
+This preliminary release makes no claim of independent assay validation. New
+matrices, external positive reference samples and interlaboratory performance
+require further evaluation. No profile pinning or change to thesis results is
+part of this release.
