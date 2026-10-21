@@ -1,6 +1,7 @@
 """Command-line reproduction of the private talazoparib/nanoDE case study."""
 
 import argparse
+import csv
 import hashlib
 import json
 import platform
@@ -16,9 +17,23 @@ from .preprocessing import SpectralConfig, correct_and_crop
 from .validation import evaluate, metrics
 
 
+CASE_FILES = ("training_spectra.csv", "training_metadata.csv",
+              "observation_spectra.csv", "observation_metadata.csv")
+CASE_UNITS = {"concentration_unit": "uM", "absorbance_unit": "AU", "wavelength_unit": "nm"}
+
+
 def validate_inputs(case: Path) -> dict:
-    """Check all supplied input hashes before executing any model."""
+    """Check all supplied input hashes before executing any model.
+
+    Every table read by the CLI must be hashed in the manifest, so omitting an
+    entry cannot bypass the check, and the declared units must be uM, AU and nm.
+    """
     manifest = json.loads((case / "manifest.json").read_text(encoding="utf-8"))
+    missing = set(CASE_FILES) - {item["path"] for item in manifest["files"]}
+    if missing:
+        raise ValueError(f"Manifest has no hash for: {', '.join(sorted(missing))}")
+    if any(manifest.get(key) != unit for key, unit in CASE_UNITS.items()):
+        raise ValueError("Manifest units must be uM, AU and nm.")
     for item in manifest["files"]:
         path = case / item["path"]
         if hashlib.sha256(path.read_bytes()).hexdigest() != item["sha256"]:
@@ -26,15 +41,37 @@ def validate_inputs(case: Path) -> dict:
     return manifest
 
 
+def read_spectra(path: Path) -> pd.DataFrame:
+    """Read a wide spectrum CSV, rejecting duplicate headers pandas would rename."""
+    with path.open(newline="", encoding="utf-8") as handle:
+        header = next(csv.reader(handle))
+    if len(header) != len(set(header)):
+        raise ValueError(f"Duplicate column names in {path.name}.")
+    return pd.read_csv(path)
+
+
+def load_case(case: Path) -> tuple[dict, pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    """Return manifest, training spectra/metadata and observation spectra/metadata.
+
+    Observation spectra and metadata must map one-to-one: a missing, extra or
+    duplicated sample is an error rather than a row silently lost in a merge.
+    """
+    manifest = validate_inputs(case)
+    frame = read_spectra(case / "training_spectra.csv")
+    metadata = pd.read_csv(case / "training_metadata.csv")
+    observations = read_spectra(case / "observation_spectra.csv")
+    observation_meta = pd.read_csv(case / "observation_metadata.csv")
+    ids = observation_meta.sample_id
+    if ids.duplicated().any() or set(ids) != set(observations.columns) - {"wavelength_nm"}:
+        raise ValueError("Observation metadata and spectra must have a one-to-one sample mapping.")
+    return manifest, frame, metadata, observations, observation_meta
+
+
 def run(case: Path, output: Path) -> dict:
     """Train and evaluate measured spectra; save diagnostics without clipping."""
     if output.resolve() == case.resolve() or case.resolve() in output.resolve().parents:
         raise ValueError("Outputs must not overwrite the input dataset directory.")
-    manifest = validate_inputs(case)
-    frame = pd.read_csv(case / "training_spectra.csv")
-    metadata = pd.read_csv(case / "training_metadata.csv")
-    observations = pd.read_csv(case / "observation_spectra.csv")
-    observation_meta = pd.read_csv(case / "observation_metadata.csv")
+    manifest, frame, metadata, observations, observation_meta = load_case(case)
     config = SpectralConfig()
     model = SpectralPLS(config).fit(frame, metadata)
     result = observation_meta.merge(model.predict(observations).rename_axis("sample_id").reset_index(),
@@ -44,8 +81,13 @@ def run(case: Path, output: Path) -> dict:
     for (scheme, name), block in predictions.groupby(["scheme", "model"]):
         summary.append({"scheme": scheme, "model": name,
                         **metrics(block.reference_uM.to_numpy(), block.predicted_uM.to_numpy())})
+    by_region = []
+    for (scheme, name, region), block in predictions.groupby(["scheme", "model", "region"]):
+        by_region.append({"scheme": scheme, "model": name, "region": region,
+                          **metrics(block.reference_uM.to_numpy(), block.predicted_uM.to_numpy())})
     blanks = result[result.role == "blank"]
     report = {"configuration": config.to_dict(), "validation": summary,
+              "validation_by_region": by_region,
               "blank": {"n_measured_spectra": len(blanks),
                         "mean_uM": float(blanks.predicted_uM.mean()),
                         "sd_uM": float(blanks.predicted_uM.std(ddof=1))},

@@ -1,36 +1,40 @@
-# Private development and public-release gate
+# Preliminary public release and follow-up checklist
 
-The owner requested private development first. Passing software tests does not
-authorize making this repository public. Public release requires a new explicit
-owner decision after the items below have been reviewed.
+## Release decision — 21 October 2026
 
-## Completed locally
+The repository owner explicitly confirmed permission to publish the included
+code and experimental data and approved MIT for code/documentation and CC BY 4.0
+for the bundled dataset. This records the owner's confirmation, not an
+independent legal determination of institutional rights.
 
-- [x] Standalone package without imports from the thesis package.
-- [x] Measured spectra, explicit metadata, source hashes and units.
-- [x] Agreement with the existing producer after export/reload.
-- [x] Unit/integration tests and full measured-case execution.
-- [x] Signed matrix-blank reporting without concentration clipping.
-- [x] Concentration holdout and additional joint-parent holdout.
-- [x] Simple baselines, reproducible metrics and diagnostic figures.
-- [x] No thesis documents, credentials or inherited Git history in the package.
+## Checks completed for this preliminary release
 
-## Before public release
+- [x] Standalone package without imports from the thesis workspace.
+- [x] Measured spectra, source hashes, units and metadata retained.
+- [x] Source-producer parity and measured-case execution checked.
+- [x] 28 unit/integration tests passed on the reviewed source.
+- [x] GitHub Actions passed on the D1-D5 audit commit.
+- [x] Input correspondence, duplicate headers, required hashes and units checked.
+- [x] Interpolation and extrapolation errors reported separately.
+- [x] Signed matrix bias and non-independent development diagnostics disclosed.
+- [x] Tracked egg-info build artifacts removed from the current version.
+- [x] Initial isolated project history reviewed; no inherited thesis history.
+- [x] Owner confirmed publication rights and approved the code/data licenses.
+- [x] Explicit owner authorization to make this repository public.
 
-- [ ] Author and collaborator approval for every included dataset and code asset.
-- [ ] Agree on code license, data terms and attribution.
-- [ ] Verify a clean installation on the documented Python environments.
-- [ ] Confirm the remote GitHub Actions run completes successfully.
-- [ ] Review dependencies and serialization across supported versions.
-- [ ] Review remaining matrix bias, calibration range and validation wording.
-- [ ] Decide whether additional measured external reference samples are needed
-      for any stronger accuracy claim. Do not manufacture such a benchmark.
-- [ ] Inspect the entire proposed public Git history and files for private details.
-- [ ] Explicit owner authorization to change visibility to public.
+## Scope of this release
 
-## Optional subsequent case studies
+This is preliminary research software, not a finished or independently validated
+assay. Passing software tests does not establish clinical suitability or accuracy
+on new matrices. Source data and numerical claims were not changed for release.
 
-Nanoprecipitation single-agent and dual-analyte models can be added after their
-own export, unit, metadata and parity checks. Their preprocessing differs and must
-not be silently replaced with the first case's settings. A profile pin or personal
-README change is not part of this repository's current scope.
+## Continuing work — not represented as completed
+
+- [ ] Independently measured positive residual-concentration references.
+- [ ] Evaluation on additional matrices and independent preparations.
+- [ ] Broader dependency and serialization compatibility testing; load only
+      trusted joblib files.
+- [ ] Additional case studies, each with its own export, unit and parity checks.
+
+Other matrices and dual-analyte models are outside this release. Any stronger
+accuracy or generalization claim requires additional evidence.

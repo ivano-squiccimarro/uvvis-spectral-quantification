@@ -28,6 +28,8 @@ def evaluate(frame: pd.DataFrame, metadata: pd.DataFrame,
     the background library: this reproduces the source producer's diagnostic.
     Joint holdout additionally excludes a background fold. Neither establishes
     external laboratory or independent batch validation. Components are fixed.
+    Holding out the lowest or highest level is extrapolation; any other level is
+    interpolation. Each row and prediction carries that region label.
     """
     calibration = metadata[metadata.role == "calibration"]
     backgrounds = list(metadata.loc[metadata.role == "background", "sample_id"])
@@ -41,6 +43,7 @@ def evaluate(frame: pd.DataFrame, metadata: pd.DataFrame,
     for scheme in ("leave_concentration_out", "joint_concentration_background_out"):
         bg_folds = [all_bg] if scheme == "leave_concentration_out" else folds
         for level in levels:
+            region = "extrapolation" if level in (levels[0], levels[-1]) else "interpolation"
             held_cal = set(calibration.loc[calibration.reference_uM == level, "sample_id"])
             for fold, held_bg in enumerate(bg_folds):
                 train_bg = all_bg if scheme == "leave_concentration_out" else all_bg - held_bg
@@ -62,9 +65,9 @@ def evaluate(frame: pd.DataFrame, metadata: pd.DataFrame,
                               "training_mean": np.repeat(ytr.mean(), len(yte))}
                 for model_name, pred in candidates.items():
                     rows.append({"scheme": scheme, "model": model_name, "held_out_uM": level,
-                                 "background_fold": fold, **metrics(yte, pred)})
+                                 "region": region, "background_fold": fold, **metrics(yte, pred)})
                     block = test_lineage.copy()
-                    block["scheme"], block["model"] = scheme, model_name
+                    block["scheme"], block["model"], block["region"] = scheme, model_name, region
                     block["background_fold"] = fold
                     block["predicted_uM"] = pred
                     predictions.append(block)
