@@ -1,0 +1,26 @@
+test_augmentation_count_and_parent_ids (test_spectral_quant.ModelTests.test_augmentation_count_and_parent_ids) ... ok
+test_duplicate_metadata_fails (test_spectral_quant.ModelTests.test_duplicate_metadata_fails) ... ok
+test_empty_parent_split_fails (test_spectral_quant.ModelTests.test_empty_parent_split_fails) ... ok
+test_metrics_bias_and_count (test_spectral_quant.ModelTests.test_metrics_bias_and_count) ... ok
+test_missing_metadata_fails (test_spectral_quant.ModelTests.test_missing_metadata_fails) ... ok
+test_negative_reference_fails (test_spectral_quant.ModelTests.test_negative_reference_fails) ... ok
+test_serialization_roundtrip (test_spectral_quant.ModelTests.test_serialization_roundtrip) ... ok
+test_signed_prediction_is_not_clipped (test_spectral_quant.ModelTests.test_signed_prediction_is_not_clipped) ... ok
+test_unfitted_prediction_fails (test_spectral_quant.ModelTests.test_unfitted_prediction_fails) ... ok
+test_unknown_training_role_fails (test_spectral_quant.ModelTests.test_unknown_training_role_fails) ... ok
+test_validation_pooled_from_predictions (test_spectral_quant.ModelTests.test_validation_pooled_from_predictions) ... ok
+test_constant_offset_is_removed (test_spectral_quant.PreprocessingTests.test_constant_offset_is_removed) ... ok
+test_descending_axis_is_equivalent (test_spectral_quant.PreprocessingTests.test_descending_axis_is_equivalent) ... ok
+test_duplicate_wavelength_fails (test_spectral_quant.PreprocessingTests.test_duplicate_wavelength_fails) ... ok
+test_explicit_minimum_fallback (test_spectral_quant.PreprocessingTests.test_explicit_minimum_fallback) ... ok
+test_infinite_value_fails (test_spectral_quant.PreprocessingTests.test_infinite_value_fails) ... ok
+test_invalid_config_fails (test_spectral_quant.PreprocessingTests.test_invalid_config_fails) ... ok
+test_missing_value_fails (test_spectral_quant.PreprocessingTests.test_missing_value_fails) ... ok
+test_missing_window_fails (test_spectral_quant.PreprocessingTests.test_missing_window_fails) ... ok
+test_nonunit_grid_fails (test_spectral_quant.PreprocessingTests.test_nonunit_grid_fails) ... ok
+test_real_case_hashes_and_producer_parity (test_spectral_quant.RealDataTests.test_real_case_hashes_and_producer_parity) ... ok
+
+----------------------------------------------------------------------
+Ran 21 tests in 0.400s
+
+OK
