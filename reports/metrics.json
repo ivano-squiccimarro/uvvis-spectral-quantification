@@ -1,0 +1,89 @@
+{
+  "configuration": {
+    "wavelength_min_nm": 270.0,
+    "wavelength_max_nm": 380.0,
+    "baseline_min_nm": 780.0,
+    "baseline_max_nm": 800.0,
+    "window_length": 9,
+    "polyorder": 2,
+    "derivative": 2,
+    "n_components": 2,
+    "turbidity_factors": [
+      0.5,
+      0.75,
+      1.0,
+      1.25,
+      1.5
+    ]
+  },
+  "validation": [
+    {
+      "scheme": "joint_concentration_background_out",
+      "model": "pls",
+      "n_augmented": 5850,
+      "rmse_uM": 2.94970536941175,
+      "mae_uM": 2.0944505844206978,
+      "bias_uM": -0.35744451284540624
+    },
+    {
+      "scheme": "joint_concentration_background_out",
+      "model": "single_derivative_wavelength",
+      "n_augmented": 5850,
+      "rmse_uM": 3.1718909720080837,
+      "mae_uM": 2.20655700668372,
+      "bias_uM": -0.2250810648149442
+    },
+    {
+      "scheme": "joint_concentration_background_out",
+      "model": "training_mean",
+      "n_augmented": 5850,
+      "rmse_uM": 20.90332363628353,
+      "mae_uM": 17.841666666666665,
+      "bias_uM": -1.0083333333333346
+    },
+    {
+      "scheme": "leave_concentration_out",
+      "model": "pls",
+      "n_augmented": 5850,
+      "rmse_uM": 2.9276145699079033,
+      "mae_uM": 2.056559521995644,
+      "bias_uM": -0.2373865290457483
+    },
+    {
+      "scheme": "leave_concentration_out",
+      "model": "single_derivative_wavelength",
+      "n_augmented": 5850,
+      "rmse_uM": 3.2252667987870125,
+      "mae_uM": 2.262919421686879,
+      "bias_uM": -0.24597502495866866
+    },
+    {
+      "scheme": "leave_concentration_out",
+      "model": "training_mean",
+      "n_augmented": 5850,
+      "rmse_uM": 20.90332363628353,
+      "mae_uM": 17.841666666666665,
+      "bias_uM": -1.0083333333333346
+    }
+  ],
+  "blank": {
+    "n_measured_spectra": 11,
+    "mean_uM": -1.7016284478976944,
+    "sd_uM": 1.0860053400396332
+  },
+  "counts": {
+    "calibration_spectra": 30,
+    "background_spectra": 39,
+    "augmented_training_spectra": 5850,
+    "observation_spectra": 68
+  },
+  "versions": {
+    "python": "3.14.7",
+    "numpy": "2.5.4",
+    "pandas": "3.0.6",
+    "scipy": "1.18.1",
+    "scikit_learn": "1.9.1"
+  },
+  "source_manifest": "talazoparib_nanode_chromophore",
+  "interpretation": "Augmented holdout diagnostics, not independent experimental batches. Nonblank supernatant input concentrations are not ground-truth residual concentrations."
+}

@@ -1,0 +1,71 @@
+"""Freeze reviewed run artifacts and an explicit upload allowlist.
+
+Run from the repository root using its installed, isolated environment.
+Experimental inputs are read-only; only reports and generated outputs are written.
+"""
+
+from __future__ import annotations
+
+import hashlib
+import importlib.metadata
+import json
+import platform
+import re
+import shutil
+import subprocess
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+def main() -> None:
+    """Check tests, preserve a reviewed snapshot and enumerate upload files."""
+    run = ROOT / "outputs" / "clean_install"
+    report = ROOT / "reports"
+    result = subprocess.run([sys.executable, "-m", "unittest", "discover", "-s", "tests", "-v"],
+                            cwd=ROOT, text=True, capture_output=True)
+    if result.returncode:
+        raise RuntimeError("Test suite failed; do not freeze or upload the snapshot.\n" + result.stderr)
+    report.mkdir(exist_ok=True)
+    (report / "tests.txt").write_text(result.stderr, encoding="utf-8")
+    for name in ("metrics.json", "validation_by_fold.csv", "measured_spectra.svg",
+                 "held_out_predictions.svg", "matrix_blanks.svg"):
+        shutil.copyfile(run / name, report / name)
+    packages = ["numpy", "pandas", "scipy", "scikit-learn", "matplotlib", "joblib",
+                "contourpy", "cycler", "fonttools", "kiwisolver", "packaging", "pillow",
+                "pyparsing", "python-dateutil", "six", "threadpoolctl", "tzdata"]
+    lock = [f"# Local tested environment: Python {platform.python_version()}, {platform.system()}"]
+    for name in packages:
+        try:
+            lock.append(f"{name}=={importlib.metadata.version(name)}")
+        except importlib.metadata.PackageNotFoundError:
+            continue
+    (ROOT / "requirements-tested.txt").write_text("\n".join(lock) + "\n", encoding="utf-8")
+    roots = [ROOT / "src", ROOT / "tests", ROOT / "docs", ROOT / "data", ROOT / "reports",
+             ROOT / "tools", ROOT / ".github"]
+    paths = [ROOT / name for name in ("README.md", "LICENSE", ".gitignore", "pyproject.toml", "requirements-tested.txt")]
+    for folder in roots:
+        paths.extend(p for p in folder.rglob("*") if p.is_file() and "__pycache__" not in p.parts)
+    entries = []
+    for path in sorted(paths):
+        relative = path.relative_to(ROOT).as_posix()
+        data = path.read_bytes()
+        text = data.decode("utf-8")
+        if (re.search(r"(?:ghp|github_pat)_[A-Za-z0-9_]{20,}", text)
+                or re.search("-----BEGIN " + "(?:RSA |EC |OPENSSH )?PRIVATE KEY-----", text)
+                or "C:" + "\\Users\\" in text):
+            raise RuntimeError(f"Potential private credential/path marker in {relative}; inspect before upload.")
+        entries.append({"path": relative, "bytes": len(data), "characters": len(text),
+                        "sha256": hashlib.sha256(data).hexdigest(),
+                        "git_blob_sha": hashlib.sha1(f"blob {len(data)}\0".encode() + data).hexdigest()})
+    payload = {"private_only": True, "repository": "ivano-squiccimarro/uvvis-spectral-quantification",
+               "files": entries, "file_count": len(entries), "total_bytes": sum(x["bytes"] for x in entries)}
+    out = ROOT / "outputs" / "upload_allowlist.json"
+    out.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+    print(json.dumps({"tests": "passed", "python": platform.python_version(),
+                      "file_count": payload["file_count"], "total_bytes": payload["total_bytes"]}))
+
+
+if __name__ == "__main__":
+    main()

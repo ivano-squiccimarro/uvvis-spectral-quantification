@@ -1,0 +1,15 @@
+LICENSE
+README.md
+pyproject.toml
+src/spectral_quant/__init__.py
+src/spectral_quant/cli.py
+src/spectral_quant/model.py
+src/spectral_quant/preprocessing.py
+src/spectral_quant/validation.py
+src/uvvis_spectral_quantification.egg-info/PKG-INFO
+src/uvvis_spectral_quantification.egg-info/SOURCES.txt
+src/uvvis_spectral_quantification.egg-info/dependency_links.txt
+src/uvvis_spectral_quantification.egg-info/entry_points.txt
+src/uvvis_spectral_quantification.egg-info/requires.txt
+src/uvvis_spectral_quantification.egg-info/top_level.txt
+tests/test_spectral_quant.py

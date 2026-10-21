@@ -1,0 +1,43 @@
+{
+  "case": "talazoparib_nanode_chromophore",
+  "visibility": "private",
+  "concentration_unit": "uM",
+  "absorbance_unit": "AU",
+  "wavelength_unit": "nm",
+  "sources": [
+    {
+      "path_in_thesis": "data/interim/Dataset_ModelTraining_Talazoparib_DE.csv",
+      "sha256": "3b69d3ab2c14b7b3f0f41eaeaa3b17df88d2efc0120646d36755df5a412576af"
+    },
+    {
+      "path_in_thesis": "data/source/uvvis/ee_curve_spectra_clean/master_talazoparib_nanode_ee_curve.csv",
+      "sha256": "7c9551fdd988d9bb48be5f09761812d08512c34a8ad460f5ebc5d0ce232b1548"
+    },
+    {
+      "path_in_thesis": "scripts/build_talazoparib_de_ee.py",
+      "sha256": "93aae19b01b442ee163cfbb54c729cd4beeee0156c0fb8b4cb3de123ec6e15ce"
+    }
+  ],
+  "files": [
+    {
+      "path": "observation_metadata.csv",
+      "sha256": "fc990f2b18f203d71ae3a9a5375af1d1f43679fe20387445ffc8fe5d10793afc"
+    },
+    {
+      "path": "observation_spectra.csv",
+      "sha256": "dc966d7e80add8b3ee7b1e4dddc6003e6b70fdbcaf454bee6d6855e15eb7008f"
+    },
+    {
+      "path": "training_metadata.csv",
+      "sha256": "428fcfc4ee6a2963026bc006bd93a17383d20d4d4c170afc9e710517e84af219"
+    },
+    {
+      "path": "training_spectra.csv",
+      "sha256": "299805da296beb2a1b3c4dcf2a2df35b662e35095795ca0b5522931e175c89b0"
+    }
+  ],
+  "transformations": "Allowlisted measured columns only; stable sample IDs; original column names retained in metadata; no new experimental exclusions, smoothing or baseline correction in exported files.",
+  "producer_parity_max_abs_uM": 5.755396159656812e-13,
+  "external_ground_truth": "Nonblank supernatants have no independent residual-concentration reference. Nominal input is not such a reference.",
+  "rights": "Private research material. Redistribution requires author and collaborator approval."
+}

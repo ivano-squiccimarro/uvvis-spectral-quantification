@@ -1,0 +1,70 @@
+sample_id,role,reference_uM,original_column,observation_unit
+cal_001,calibration,0,DE ( 20uL_2%PVA + 150uL_0uMTala+ 1mL_1.5%PVA) 1 ,measured_spectrum
+cal_002,calibration,0,DE ( 20uL_2%PVA + 150uL_0uMTala+ 1mL_1.5%PVA) 2,measured_spectrum
+cal_003,calibration,0,DE ( 20uL_2%PVA + 150uL_0uMTala+ 1mL_1.5%PVA) 3,measured_spectrum
+cal_004,calibration,10,DE ( 20uL_2%PVA + 150uL_10uMTala+ 1mL_1.5%PVA) 1 ,measured_spectrum
+cal_005,calibration,10,DE ( 20uL_2%PVA + 150uL_10uMTala+ 1mL_1.5%PVA) 2,measured_spectrum
+cal_006,calibration,10,DE ( 20uL_2%PVA + 150uL_10uMTala+ 1mL_1.5%PVA) 3,measured_spectrum
+cal_007,calibration,25,DE ( 20uL_2%PVA + 150uL_25uMTala+ 1mL_1.5%PVA) 1,measured_spectrum
+cal_008,calibration,25,DE ( 20uL_2%PVA + 150uL_25uMTala+ 1mL_1.5%PVA) 2,measured_spectrum
+cal_009,calibration,25,DE ( 20uL_2%PVA + 150uL_25uMTala+ 1mL_1.5%PVA) 3,measured_spectrum
+cal_010,calibration,50,DE ( 20uL_2%PVA + 150uL_50uMTala+ 1mL_1.5%PVA) 1,measured_spectrum
+cal_011,calibration,50,DE ( 20uL_2%PVA + 150uL_50uMTala+ 1mL_1.5%PVA) 2,measured_spectrum
+cal_012,calibration,50,DE ( 20uL_2%PVA + 150uL_50uMTala+ 1mL_1.5%PVA) 3,measured_spectrum
+cal_013,calibration,1,DE ( 20uL_2%PVA + 150uL_1uMTala+ 1mL_1.5%PVA) 1,measured_spectrum
+cal_014,calibration,1,DE ( 20uL_2%PVA + 150uL_1uMTala+ 1mL_1.5%PVA) 2,measured_spectrum
+cal_015,calibration,1,DE ( 20uL_2%PVA + 150uL_1uMTala+ 1mL_1.5%PVA) 3,measured_spectrum
+cal_016,calibration,5,DE ( 20uL_2%PVA + 150uL_5uMTala+ 1mL_1.5%PVA) 1,measured_spectrum
+cal_017,calibration,5,DE ( 20uL_2%PVA + 150uL_5uMTala+ 1mL_1.5%PVA) 2,measured_spectrum
+cal_018,calibration,5,DE ( 20uL_2%PVA + 150uL_5uMTala+ 1mL_1.5%PVA) 3,measured_spectrum
+cal_019,calibration,17.5,DE ( 20uL_2%PVA + 150uL_17.5uMTala+ 1mL_1.5%PVA) 1,measured_spectrum
+cal_020,calibration,17.5,DE ( 20uL_2%PVA + 150uL_17.5uMTala+ 1mL_1.5%PVA) 2,measured_spectrum
+cal_021,calibration,17.5,DE ( 20uL_2%PVA + 150uL_17.5uMTala+ 1mL_1.5%PVA) 3,measured_spectrum
+cal_022,calibration,30,DE ( 20uL_2%PVA + 150uL_30uMTala+ 1mL_1.5%PVA) 1,measured_spectrum
+cal_023,calibration,30,DE ( 20uL_2%PVA + 150uL_30uMTala+ 1mL_1.5%PVA) 2,measured_spectrum
+cal_024,calibration,30,DE ( 20uL_2%PVA + 150uL_30uMTala+ 1mL_1.5%PVA) 3,measured_spectrum
+cal_025,calibration,50,DE ( 20uL_2%PVA + 150uL_50uMTala+ 1mL_1.5%PVA) c2,measured_spectrum
+cal_026,calibration,30,DE ( 20uL_2%PVA + 150uL_30uMTala+ 1mL_1.5%PVA) c,measured_spectrum
+cal_027,calibration,30,DE ( 20uL_2%PVA + 150uL_30uMTala+ 1mL_1.5%PVA) c1,measured_spectrum
+cal_028,calibration,30,DE ( 20uL_2%PVA + 150uL_30uMTala+ 1mL_1.5%PVA) c2,measured_spectrum
+cal_029,calibration,50,E ( 20uL_2%PVA + 150uL_50uMTala+ 1mL_1.5%PVA) c,measured_spectrum
+cal_030,calibration,50,DE ( 20uL_2%PVA + 150uL_50uMTala+ 1mL_1.5%PVA) c1,measured_spectrum
+bg_001,background,,Scattering 1: 100,measured_spectrum
+bg_002,background,,Scattering 5: 100,measured_spectrum
+bg_003,background,,Scattering 2.5: 100,measured_spectrum
+bg_004,background,,Scattering 1.25: 100,measured_spectrum
+bg_005,background,,Scattering 3.25: 100,measured_spectrum
+bg_006,background,,Scattering 3 : 100,measured_spectrum
+bg_007,background,,Scattering 2.75:100,measured_spectrum
+bg_008,background,,Scattering 10:100,measured_spectrum
+bg_009,background,,Scattering 9.95:100,measured_spectrum
+bg_010,background,,Scattering 9.90:100,measured_spectrum
+bg_011,background,,Scattering 9.85:100,measured_spectrum
+bg_012,background,,Scattering 9.8:100,measured_spectrum
+bg_013,background,,Scattering 9.75:100,measured_spectrum
+bg_014,background,,Scattering 9.65:100,measured_spectrum
+bg_015,background,,Scattering 9.5:100,measured_spectrum
+bg_016,background,,Scattering 9.4:100,measured_spectrum
+bg_017,background,,Scattering 9.0:100,measured_spectrum
+bg_018,background,,Scattering 8.8:100,measured_spectrum
+bg_019,background,,Scattering 8.5:100,measured_spectrum
+bg_020,background,,Scattering 8.0:100,measured_spectrum
+bg_021,background,, Scattering 1,measured_spectrum
+bg_022,background,,Scattering 2,measured_spectrum
+bg_023,background,,Scattering 3,measured_spectrum
+bg_024,background,,Scattering 4,measured_spectrum
+bg_025,background,,Scattering 5,measured_spectrum
+bg_026,background,,Scattering 7,measured_spectrum
+bg_027,background,,Scattering 8,measured_spectrum
+bg_028,background,,Scattering 9,measured_spectrum
+bg_029,background,,Scattering 10,measured_spectrum
+bg_030,background,,Scattering 11,measured_spectrum
+bg_031,background,,Scattering 12,measured_spectrum
+bg_032,background,,Scattering 13,measured_spectrum
+bg_033,background,,Scattering 14,measured_spectrum
+bg_034,background,,Scattering 15,measured_spectrum
+bg_035,background,,Scattering 16,measured_spectrum
+bg_036,background,,Scattering 17,measured_spectrum
+bg_037,background,,Scattering 18,measured_spectrum
+bg_038,background,,Scattering 19,measured_spectrum
+bg_039,background,,Scattering 20,measured_spectrum
